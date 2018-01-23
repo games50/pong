@@ -164,17 +164,10 @@ function love.update(dt)
             ball.dx = -ball.dx * 1.03
             ball.x = player1.x + 5
 
-            -- formula for adjusting the angle of the ball when hit by the
-            -- paddle; if the ball hits the paddle above its midpoint, then
-            -- the dy should be negative and scaled by how far above the
-            -- midpoint it hits; the opposite is true for below the midpoint,
-            -- only the dy should be positive
-            if ball.y < player1.y + player1.height / 2 then
-                ball.dy = -math.random(50, 100) * (player1.y + 
-                    (player1.height / 2)) / ball.y
+            if ball.dy < 0 then
+                ball.dy = -math.random(10, 150)
             else
-                ball.dy = math.random(50, 100) * 
-                    (player1.y + player1.height) / ball.y
+                ball.dy = math.random(10, 150)
             end
 
             sounds['paddle_hit']:play()
@@ -183,12 +176,10 @@ function love.update(dt)
             ball.dx = -ball.dx * 1.03
             ball.x = player2.x - 4
 
-            if ball.y < player2.y + player2.height / 2 then
-                ball.dy = -math.random(50, 100) * (player2.y + 
-                    (player2.height / 2)) / ball.y
+            if ball.dy < 0 then
+                ball.dy = -math.random(10, 150)
             else
-                ball.dy = math.random(50, 100) * 
-                    (player2.y + player2.height) / ball.y
+                ball.dy = math.random(10, 150)
             end
 
             sounds['paddle_hit']:play()
