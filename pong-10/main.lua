@@ -2,8 +2,8 @@
     GD50 2018
     Pong Remake
 
-    pong-6
-    "The FPS Update"
+    pong-9
+    "The Serve Update"
 
     -- Main Program --
 
@@ -88,6 +88,10 @@ function love.load()
     player1Score = 0
     player2Score = 0
 
+    -- either going to be 1 or 2; whomever is scored on gets to serve the
+    -- following turn
+    servingPlayer = 1
+
     -- initialize our player paddles; make them global so that they can be
     -- detected by other functions and modules
     player1 = Paddle(10, 30, 5, 20)
@@ -107,6 +111,80 @@ end
     since the last frame, which LÖVE2D supplies us.
 ]]
 function love.update(dt)
+    if gameState == 'start' then
+        -- pressing enter will begin the game
+        if love.keyboard.wasPressed('enter') or love.keyboard.wasPressed('return') then
+            gameState = 'serve'
+        end
+    elseif gameState == 'serve' then
+        -- pressing enter will serve the ball
+        if love.keyboard.wasPressed('enter') or love.keyboard.wasPressed('return') then
+            gameState = 'play'
+
+            -- before switching to play, initialize ball's velocity based
+            -- on player who last scored
+            ball.dy = math.random(-50, 50)
+            if servingPlayer == 1 then
+                ball.dx = math.random(140, 200)
+            else
+                ball.dx = -math.random(140, 200)
+            end
+        end
+    elseif gameState == 'play' then
+        -- detect ball collision with paddles, reversing dx if true and
+        -- slightly increasing it, then altering the dy based on the position of collision
+        if ball:collides(player1) then
+            ball.dx = -ball.dx * 1.03
+            ball.x = player1.x + 5
+
+            -- keep velocity going in the same direction, but randomize it
+            if ball.dy < 0 then
+                ball.dy = -math.random(10, 150)
+            else
+                ball.dy = math.random(10, 150)
+            end
+        end
+        if ball:collides(player2) then
+            ball.dx = -ball.dx * 1.03
+            ball.x = player2.x - 4
+
+            -- keep velocity going in the same direction, but randomize it
+            if ball.dy < 0 then
+                ball.dy = -math.random(10, 150)
+            else
+                ball.dy = math.random(10, 150)
+            end
+        end
+
+        -- detect upper and lower screen boundary collision and reverse if collided
+        if ball.y <= 0 then
+            ball.y = 0
+            ball.dy = -ball.dy
+        end
+
+        -- -4 to account for the ball's size
+        if ball.y >= VIRTUAL_HEIGHT - 4 then
+            ball.y = VIRTUAL_HEIGHT - 4
+            ball.dy = -ball.dy
+        end
+    end
+
+    -- if we reach the left or right edge of the screen, 
+    -- go back to start and update the score
+    if ball.x < 0 then
+        servingPlayer = 1
+        player2Score = player2Score + 1
+        ball:reset()
+        gameState = 'start'
+    end
+
+    if ball.x > VIRTUAL_WIDTH then
+        servingPlayer = 2
+        player1Score = player1Score + 1
+        ball:reset()
+        gameState = 'start'
+    end
+
     -- player 1 movement
     if love.keyboard.isDown('w') then
         player1.dy = -PADDLE_SPEED
@@ -173,19 +251,23 @@ function love.draw()
     -- draw different things based on the state of the game
     love.graphics.setFont(smallFont)
 
-    if gameState == 'start' then
-        love.graphics.printf('Hello Start State!', 0, 20, VIRTUAL_WIDTH, 'center')
-    else
-        love.graphics.printf('Hello Play State!', 0, 20, VIRTUAL_WIDTH, 'center')
-    end
+    displayScore()
 
-    -- draw score on the left and right center of the screen
-    -- need to switch font to draw before actually printing
-    love.graphics.setFont(scoreFont)
-    love.graphics.print(tostring(player1Score), VIRTUAL_WIDTH / 2 - 50, 
-        VIRTUAL_HEIGHT / 3)
-    love.graphics.print(tostring(player2Score), VIRTUAL_WIDTH / 2 + 30,
-        VIRTUAL_HEIGHT / 3)
+    -- render different things depending on which part of the game we're in
+    if gameState == 'start' then
+        -- UI messages
+        love.graphics.setFont(smallFont)
+        love.graphics.printf('Welcome to Pong!', 0, 10, VIRTUAL_WIDTH, 'center')
+        love.graphics.printf('Press Enter to begin!', 0, 20, VIRTUAL_WIDTH, 'center')
+    elseif gameState == 'serve' then
+        -- UI messages
+        love.graphics.setFont(smallFont)
+        love.graphics.printf('Player ' .. tostring(servingPlayer) .. "'s serve!", 
+            0, 10, VIRTUAL_WIDTH, 'center')
+        love.graphics.printf('Press Enter to serve!', 0, 20, VIRTUAL_WIDTH, 'center')
+    elseif gameState == 'play' then
+        -- no UI messages to display in play
+    end
 
     -- render paddles, now using their class's render method
     player1:render()
@@ -209,4 +291,17 @@ function displayFPS()
     love.graphics.setFont(smallFont)
     love.graphics.setColor(0, 255, 0, 255)
     love.graphics.print('FPS: ' .. tostring(love.timer.getFPS()), 10, 10)
+end
+
+--[[
+    Simply draws the score to the screen.
+]]
+function displayScore()
+    -- draw score on the left and right center of the screen
+    -- need to switch font to draw before actually printing
+    love.graphics.setFont(scoreFont)
+    love.graphics.print(tostring(player1Score), VIRTUAL_WIDTH / 2 - 50, 
+        VIRTUAL_HEIGHT / 3)
+    love.graphics.print(tostring(player2Score), VIRTUAL_WIDTH / 2 + 30,
+        VIRTUAL_HEIGHT / 3)
 end

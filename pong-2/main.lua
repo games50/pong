@@ -2,6 +2,9 @@
     GD50 2018
     Pong Remake
 
+    pong-2
+    "The Rectangle Update"
+
     -- Main Program --
 
     Author: Colton Ogden

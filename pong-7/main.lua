@@ -2,6 +2,9 @@
     GD50 2018
     Pong Remake
 
+    pong-7
+    "The Collision Update"
+
     -- Main Program --
 
     Author: Colton Ogden

@@ -2,6 +2,9 @@
     GD50 2018
     Pong Remake
 
+    pong-3
+    "The Movement Update"
+
     -- Main Program --
 
     Author: Colton Ogden

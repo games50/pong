@@ -2,6 +2,9 @@
     GD50 2018
     Pong Remake
 
+    pong-0
+    "The Day 0 Update"
+
     -- Main Program --
 
     Author: Colton Ogden

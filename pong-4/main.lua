@@ -2,6 +2,9 @@
     GD50 2018
     Pong Remake
 
+    pong-4
+    "The Moving Ball Update"
+
     -- Main Program --
 
     Author: Colton Ogden
@@ -46,9 +49,6 @@ function love.load()
     -- more "retro-looking" font object we can use for any text
     smallFont = love.graphics.newFont('font.ttf', 8)
 
-    -- larger font for drawing the score on the screen
-    scoreFont = love.graphics.newFont('font.ttf', 32)
-
     -- set LÖVE2D's active font to the smallFont obect
     love.graphics.setFont(smallFont)
 
@@ -58,11 +58,6 @@ function love.load()
         fullscreen = false,
         resizable = true
     })
-
-    -- initialize score variables, used for rendering on the screen and keeping
-    -- track of the winner
-    player1Score = 0
-    player2Score = 0
 
     -- paddle positions on the Y axis (they can only move up or down)
     player1Y = 30
@@ -164,14 +159,6 @@ function love.draw()
     else
         love.graphics.printf('Hello Play State!', 0, 20, VIRTUAL_WIDTH, 'center')
     end
-
-    -- draw score on the left and right center of the screen
-    -- need to switch font to draw before actually printing
-    love.graphics.setFont(scoreFont)
-    love.graphics.print(tostring(player1Score), VIRTUAL_WIDTH / 2 - 50, 
-        VIRTUAL_HEIGHT / 3)
-    love.graphics.print(tostring(player2Score), VIRTUAL_WIDTH / 2 + 30,
-        VIRTUAL_HEIGHT / 3)
 
     -- render first paddle (left side), now using the players' Y variable
     love.graphics.rectangle('fill', 10, player1Y, 5, 20)

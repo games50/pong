@@ -2,6 +2,9 @@
     GD50 2018
     Pong Remake
 
+    pong-1
+    "The Low-Res Update"
+
     -- Main Program --
 
     Author: Colton Ogden
