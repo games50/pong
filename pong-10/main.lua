@@ -2,8 +2,8 @@
     GD50 2018
     Pong Remake
 
-    pong-9
-    "The Serve Update"
+    pong-10
+    "The Victory Update"
 
     -- Main Program --
 
@@ -67,13 +67,10 @@ function love.load()
     -- use the current time, since that will vary on startup every time
     math.randomseed(os.time())
 
-    -- more "retro-looking" font object we can use for any text
+    -- initialize our nice-looking retro text fonts
     smallFont = love.graphics.newFont('font.ttf', 8)
-
-    -- larger font for drawing the score on the screen
+    largeFont = love.graphics.newFont('font.ttf', 16)
     scoreFont = love.graphics.newFont('font.ttf', 32)
-
-    -- set LÖVE2D's active font to the smallFont obect
     love.graphics.setFont(smallFont)
 
     -- initialize window with virtual resolution
@@ -92,17 +89,11 @@ function love.load()
     -- following turn
     servingPlayer = 1
 
-    -- initialize our player paddles; make them global so that they can be
-    -- detected by other functions and modules
+    -- initialize player paddles and ball
     player1 = Paddle(10, 30, 5, 20)
     player2 = Paddle(VIRTUAL_WIDTH - 10, VIRTUAL_HEIGHT - 30, 5, 20)
-
-    -- place a ball in the middle of the screen
     ball = Ball(VIRTUAL_WIDTH / 2 - 2, VIRTUAL_HEIGHT / 2 - 2, 4, 4)
 
-    -- game state variable used to transition between different parts of the game
-    -- (used for beginning, menus, main game, high score list, etc.)
-    -- we will use this to determine behavior during render and update
     gameState = 'start'
 end
 
@@ -111,24 +102,14 @@ end
     since the last frame, which LÖVE2D supplies us.
 ]]
 function love.update(dt)
-    if gameState == 'start' then
-        -- pressing enter will begin the game
-        if love.keyboard.wasPressed('enter') or love.keyboard.wasPressed('return') then
-            gameState = 'serve'
-        end
-    elseif gameState == 'serve' then
-        -- pressing enter will serve the ball
-        if love.keyboard.wasPressed('enter') or love.keyboard.wasPressed('return') then
-            gameState = 'play'
-
-            -- before switching to play, initialize ball's velocity based
-            -- on player who last scored
-            ball.dy = math.random(-50, 50)
-            if servingPlayer == 1 then
-                ball.dx = math.random(140, 200)
-            else
-                ball.dx = -math.random(140, 200)
-            end
+    if gameState == 'serve' then
+        -- before switching to play, initialize ball's velocity based
+        -- on player who last scored
+        ball.dy = math.random(-50, 50)
+        if servingPlayer == 1 then
+            ball.dx = math.random(140, 200)
+        else
+            ball.dx = -math.random(140, 200)
         end
     elseif gameState == 'play' then
         -- detect ball collision with paddles, reversing dx if true and
@@ -167,22 +148,37 @@ function love.update(dt)
             ball.y = VIRTUAL_HEIGHT - 4
             ball.dy = -ball.dy
         end
-    end
+        
+        -- if we reach the left or right edge of the screen, 
+        -- go back to start and update the score
+        if ball.x < 0 then
+            servingPlayer = 1
+            player2Score = player2Score + 1
 
-    -- if we reach the left or right edge of the screen, 
-    -- go back to start and update the score
-    if ball.x < 0 then
-        servingPlayer = 1
-        player2Score = player2Score + 1
-        ball:reset()
-        gameState = 'start'
-    end
+            -- if we've reached a score of 10, the game is over; set the
+            -- state to done so we can show the victory message
+            if player2Score == 10 then
+                winningPlayer = 2
+                gameState = 'done'
+            else
+                gameState = 'serve'
+                -- places the ball in the middle of the screen, no velocity
+                ball:reset()
+            end
+        end
 
-    if ball.x > VIRTUAL_WIDTH then
-        servingPlayer = 2
-        player1Score = player1Score + 1
-        ball:reset()
-        gameState = 'start'
+        if ball.x > VIRTUAL_WIDTH then
+            servingPlayer = 2
+            player1Score = player1Score + 1
+            
+            if player1Score == 10 then
+                winningPlayer = 1
+                gameState = 'done'
+            else
+                gameState = 'serve'
+                ball:reset()
+            end
+        end
     end
 
     -- player 1 movement
@@ -218,20 +214,33 @@ end
     passes in the key we pressed so we can access.
 ]]
 function love.keypressed(key)
-    -- keys can be accessed by string name
+
     if key == 'escape' then
-        -- function LÖVE gives us to terminate application
         love.event.quit()
-    -- if we press enter during the start state of the game, we'll go into play mode
-    -- during play mode, the ball will move in a random direction
+    -- if we press enter during either the start or serve phase, it should
+    -- transition to the next appropriate state
     elseif key == 'enter' or key == 'return' then
         if gameState == 'start' then
+            gameState = 'serve'
+        elseif gameState == 'serve' then
             gameState = 'play'
-        else
-            gameState = 'start'
+        elseif gameState == 'done' then
+            -- game is simply in a restart phase here, but will set the serving
+            -- player to the opponent of whomever won for fairness!
+            gameState = 'serve'
 
-            -- ball's new reset method
             ball:reset()
+
+            -- reset scores to 0
+            player1Score = 0
+            player2Score = 0
+
+            -- decide serving player as the opposite of who won
+            if winningPlayer == 1 then
+                servingPlayer = 2
+            else
+                servingPlayer = 1
+            end
         end
     end
 end
@@ -241,45 +250,43 @@ end
     updated or otherwise.
 ]]
 function love.draw()
-    -- begin rendering at virtual resolution
+
     push:apply('start')
 
     -- clear the screen with a specific color; in this case, a color similar
     -- to some versions of the original Pong
     love.graphics.clear(40, 45, 52, 255)
 
-    -- draw different things based on the state of the game
     love.graphics.setFont(smallFont)
 
     displayScore()
 
-    -- render different things depending on which part of the game we're in
     if gameState == 'start' then
-        -- UI messages
         love.graphics.setFont(smallFont)
         love.graphics.printf('Welcome to Pong!', 0, 10, VIRTUAL_WIDTH, 'center')
         love.graphics.printf('Press Enter to begin!', 0, 20, VIRTUAL_WIDTH, 'center')
     elseif gameState == 'serve' then
-        -- UI messages
         love.graphics.setFont(smallFont)
         love.graphics.printf('Player ' .. tostring(servingPlayer) .. "'s serve!", 
             0, 10, VIRTUAL_WIDTH, 'center')
         love.graphics.printf('Press Enter to serve!', 0, 20, VIRTUAL_WIDTH, 'center')
     elseif gameState == 'play' then
         -- no UI messages to display in play
+    elseif gameState == 'done' then
+        -- UI messages
+        love.graphics.setFont(largeFont)
+        love.graphics.printf('Player ' .. tostring(winningPlayer) .. ' wins!',
+            0, 10, VIRTUAL_WIDTH, 'center')
+        love.graphics.setFont(smallFont)
+        love.graphics.printf('Press Enter to restart!', 0, 30, VIRTUAL_WIDTH, 'center')
     end
 
-    -- render paddles, now using their class's render method
     player1:render()
     player2:render()
-
-    -- render ball using its class's render method
     ball:render()
 
-    -- new function just to demonstrate how to see FPS in LÖVE2D
     displayFPS()
 
-    -- end rendering at virtual resolution
     push:apply('end')
 end
 
