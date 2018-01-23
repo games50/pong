@@ -164,6 +164,7 @@ function love.update(dt)
             ball.dx = -ball.dx * 1.03
             ball.x = player1.x + 5
 
+            -- keep velocity going in the same direction, but randomize it
             if ball.dy < 0 then
                 ball.dy = -math.random(10, 150)
             else
@@ -176,6 +177,7 @@ function love.update(dt)
             ball.dx = -ball.dx * 1.03
             ball.x = player2.x - 4
 
+            -- keep velocity going in the same direction, but randomize it
             if ball.dy < 0 then
                 ball.dy = -math.random(10, 150)
             else
