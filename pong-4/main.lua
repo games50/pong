@@ -54,9 +54,9 @@ function love.load()
 
     -- initialize window with virtual resolution
     push:setupScreen(VIRTUAL_WIDTH, VIRTUAL_HEIGHT, WINDOW_WIDTH, WINDOW_HEIGHT, {
-        vsync = true,
         fullscreen = false,
-        resizable = true
+        resizable = false,
+        vsync = true
     })
 
     -- paddle positions on the Y axis (they can only move up or down)

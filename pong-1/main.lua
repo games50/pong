@@ -45,9 +45,9 @@ function love.load()
     -- actual window no matter its dimensions; replaces our love.window.setMode call
     -- from the last example
     push:setupScreen(VIRTUAL_WIDTH, VIRTUAL_HEIGHT, WINDOW_WIDTH, WINDOW_HEIGHT, {
-        vsync = true,
         fullscreen = false,
-        resizable = true
+        resizable = false,
+        vsync = true
     })
 end
 

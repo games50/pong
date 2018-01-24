@@ -83,9 +83,9 @@ function love.load()
     -- initialize our virtual resolution, which will be rendered within our
     -- actual window no matter its dimensions
     push:setupScreen(VIRTUAL_WIDTH, VIRTUAL_HEIGHT, WINDOW_WIDTH, WINDOW_HEIGHT, {
-        vsync = true,
         fullscreen = false,
-        resizable = true
+        resizable = false,
+        vsync = true
     })
 
     -- initialize our player paddles; make them global so that they can be
