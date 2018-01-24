@@ -130,9 +130,13 @@ function love.keypressed(key)
         else
             gameState = 'start'
             
+            -- start ball's position in the middle of the screen
             ballX = VIRTUAL_WIDTH / 2 - 2
             ballY = VIRTUAL_HEIGHT / 2 - 2
 
+            -- given ball's x and y velocity a random starting value
+            -- the and/or pattern here is Lua's way of accomplishing a ternary operation
+            -- in other programming languages like C
             ballDX = math.random(2) == 1 and 100 or -100
             ballDY = math.random(-50, 50) * 1.5
         end
