@@ -64,14 +64,14 @@ function love.load()
     -- more "retro-looking" font object we can use for any text
     smallFont = love.graphics.newFont('font.ttf', 8)
 
-    -- set LÖVE2D's active font to the smallFont obect
+    -- set LÖVE2D's active font to the smallFont object
     love.graphics.setFont(smallFont)
 
     -- initialize window with virtual resolution
     push:setupScreen(VIRTUAL_WIDTH, VIRTUAL_HEIGHT, WINDOW_WIDTH, WINDOW_HEIGHT, {
-        vsync = true,
         fullscreen = false,
-        resizable = true
+        resizable = true,
+        vsync = true
     })
 
     -- initialize our player paddles; make them global so that they can be
