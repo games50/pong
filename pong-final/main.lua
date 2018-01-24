@@ -84,7 +84,7 @@ function love.load()
     -- actual window no matter its dimensions
     push:setupScreen(VIRTUAL_WIDTH, VIRTUAL_HEIGHT, WINDOW_WIDTH, WINDOW_HEIGHT, {
         fullscreen = false,
-        resizable = false,
+        resizable = true,
         vsync = true
     })
 
