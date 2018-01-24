@@ -3,7 +3,7 @@
     Pong Remake
 
     pong-4
-    "The Moving Ball Update"
+    "The Ball Update"
 
     -- Main Program --
 

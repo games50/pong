@@ -3,7 +3,7 @@
     Pong Remake
 
     pong-0
-    "The Day 0 Update"
+    "The Day-0 Update"
 
     -- Main Program --
 
@@ -32,14 +32,6 @@ function love.load()
         resizable = true,
         vsync = true
     })
-end
-
---[[
-    Runs every frame, with "dt" passed in, our delta in seconds since the last frame, which
-    LÖVE2D supplies us.
-]]
-function love.update(dt)
-    -- update function
 end
 
 --[[

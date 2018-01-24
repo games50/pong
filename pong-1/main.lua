@@ -52,14 +52,6 @@ function love.load()
 end
 
 --[[
-    Runs every frame, with "dt" passed in, our delta in seconds 
-    since the last frame, which LÖVE2D supplies us.
-]]
-function love.update(dt)
-    -- update function
-end
-
---[[
     Keyboard handling, called by LÖVE2D each frame; 
     passes in the key we pressed so we can access.
 ]]

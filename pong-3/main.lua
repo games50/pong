@@ -3,7 +3,7 @@
     Pong Remake
 
     pong-3
-    "The Movement Update"
+    "The Paddle Update"
 
     -- Main Program --
 

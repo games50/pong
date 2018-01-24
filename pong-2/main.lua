@@ -49,16 +49,8 @@ function love.load()
     push:setupScreen(VIRTUAL_WIDTH, VIRTUAL_HEIGHT, WINDOW_WIDTH, WINDOW_HEIGHT, {
         vsync = true,
         fullscreen = false,
-        resizable = true
+        resizable = false
     })
-end
-
---[[
-    Runs every frame, with "dt" passed in, our delta in seconds 
-    since the last frame, which LÖVE2D supplies us.
-]]
-function love.update(dt)
-    -- update function
 end
 
 --[[
