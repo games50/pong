@@ -316,7 +316,7 @@ function love.draw()
 
     -- clear the screen with a specific color; in this case, a color similar
     -- to some versions of the original Pong
-    love.graphics.clear(r, g, b , a)
+    love.graphics.clear(r, g, b, a)
     
     -- render different things depending on which part of the game we're in
     if gameState == 'start' then
