@@ -51,6 +51,9 @@ VIRTUAL_HEIGHT = 243
 -- speed at which we will move our paddle; multiplied by dt in update
 PADDLE_SPEED = 200
 
+-- check for LOVE version 11
+IS_LOVE11 = love.getVersion() == 11
+
 --[[
     Runs when the game first starts up, only once; used to initialize the game.
 ]]
@@ -224,9 +227,18 @@ function love.draw()
 
     push:apply('start')
 
+    --[[
+        LOVE 11 changed the color value range from 0-255 to 0-1
+    ]]
+    local r, g, b, a =
+        (IS_LOVE11 and 40 / 255) or 40,
+        (IS_LOVE11 and 45 / 255) or 45,
+        (IS_LOVE11 and 52 / 255) or 52,
+        (IS_LOVE11 and 255 / 255) or 255
+
     -- clear the screen with a specific color; in this case, a color similar
     -- to some versions of the original Pong
-    love.graphics.clear(40, 45, 52, 255)
+    love.graphics.clear(r, g, b , a)
 
     love.graphics.setFont(smallFont)
 
