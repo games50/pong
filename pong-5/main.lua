@@ -154,7 +154,7 @@ function love.draw()
 
     -- clear the screen with a specific color; in this case, a color similar
     -- to some versions of the original Pong
-    love.graphics.clear(40, 45, 52, 255)
+    love.graphics.clear(0.157, 0.176, 0.204, 255)
 
     -- draw different things based on the state of the game
     love.graphics.setFont(smallFont)
