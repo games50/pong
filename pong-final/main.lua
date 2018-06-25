@@ -85,7 +85,8 @@ function love.load()
     push:setupScreen(VIRTUAL_WIDTH, VIRTUAL_HEIGHT, WINDOW_WIDTH, WINDOW_HEIGHT, {
         fullscreen = false,
         resizable = true,
-        vsync = true
+        vsync = true,
+        canvas = false
     })
 
     -- initialize our player paddles; make them global so that they can be
@@ -300,7 +301,7 @@ end
 ]]
 function love.draw()
     -- begin drawing with push, in our virtual resolution
-    push:apply('start')
+    push:start()
 
     love.graphics.clear(40, 45, 52, 255)
     
@@ -338,7 +339,7 @@ function love.draw()
     displayFPS()
 
     -- end our drawing to push
-    push:apply('end')
+    push:finish()
 end
 
 --[[
@@ -361,4 +362,5 @@ function displayFPS()
     love.graphics.setFont(smallFont)
     love.graphics.setColor(0, 255, 0, 255)
     love.graphics.print('FPS: ' .. tostring(love.timer.getFPS()), 10, 10)
+    love.graphics.setColor(255, 255, 255, 255)
 end
