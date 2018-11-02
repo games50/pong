@@ -20,6 +20,8 @@
     modern systems.
 ]]
 
+package.path = package.path .. ";../?.lua"
+
 -- push is a library that will allow us to draw our game at a virtual
 -- resolution, instead of however large our window is; used to provide
 -- a more retro aesthetic
