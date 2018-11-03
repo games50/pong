@@ -54,6 +54,16 @@ VIRTUAL_HEIGHT = 243
 PADDLE_SPEED = 200
 
 --[[
+    Love 11 compat
+]]
+function clear(r, g, b, a)
+    if love.getVersion() >= 11 then
+       r, g, b, a = r / 255, g / 255, b / 255, a / 255
+    end
+    love.graphics.clear(r, g, b, a)
+end
+
+--[[
     Runs when the game first starts up, only once; used to initialize the game.
 ]]
 function love.load()
@@ -281,7 +291,7 @@ function love.draw()
 
     -- clear the screen with a specific color; in this case, a color similar
     -- to some versions of the original Pong
-    love.graphics.clear(40, 45, 52, 255)
+    clear(40, 45, 52, 255)
 
     love.graphics.setFont(smallFont)
 
