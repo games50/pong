@@ -17,6 +17,8 @@
     modern systems.
 ]]
 
+package.path = package.path .. ";../?.lua"
+
 -- push is a library that will allow us to draw our game at a virtual
 -- resolution, instead of however large our window is; used to provide
 -- a more retro aesthetic
@@ -49,6 +51,16 @@ VIRTUAL_HEIGHT = 243
 
 -- paddle movement speed
 PADDLE_SPEED = 200
+
+--[[
+    Love 11 compat
+]]
+function clear(r, g, b, a)
+    if love.getVersion() >= 11 then
+       r, g, b, a = r / 255, g / 255, b / 255, a / 255
+    end
+    love.graphics.clear(r, g, b, a)
+end
 
 --[[
     Called just once at the beginning of the game; used to set up
@@ -303,7 +315,7 @@ function love.draw()
     -- begin drawing with push, in our virtual resolution
     push:start()
 
-    love.graphics.clear(40, 45, 52, 255)
+    clear(40, 45, 52, 255)
     
     -- render different things depending on which part of the game we're in
     if gameState == 'start' then
