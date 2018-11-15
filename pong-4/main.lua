@@ -49,7 +49,7 @@ function love.load()
     -- more "retro-looking" font object we can use for any text
     smallFont = love.graphics.newFont('font.ttf', 8)
 
-    -- set LÖVE2D's active font to the smallFont obect
+    -- set LÖVE2D's active font to the smallFont object
     love.graphics.setFont(smallFont)
 
     -- initialize window with virtual resolution
@@ -91,7 +91,7 @@ function love.update(dt)
         player1Y = math.max(0, player1Y + -PADDLE_SPEED * dt)
     elseif love.keyboard.isDown('s') then
         -- add positive paddle speed to current Y scaled by deltaTime
-        -- math.min returns the lesser of two values; bottom of the egde minus paddle height
+        -- math.min returns the lesser of two values; bottom of the edge minus paddle height
         -- and player Y will ensure we don't go below it
         player1Y = math.min(VIRTUAL_HEIGHT - 20, player1Y + PADDLE_SPEED * dt)
     end
