@@ -7,6 +7,11 @@
 
 local love11 = love.getVersion() == 11
 local getDPI = love11 and love.window.getDPIScale or love.window.getPixelScale
+local windowUpdateMode = love11 and love.window.updateMode or function(width, height, settings)
+  local _, _, flags = love.window.getMode()
+  for k, v in pairs(settings) do flags[k] = v end
+  love.window.setMode(width, height, flags)
+end
 
 local push = {
   
@@ -39,7 +44,7 @@ function push:setupScreen(WWIDTH, WHEIGHT, RWIDTH, RHEIGHT, settings)
   self:applySettings(self.defaults) --set defaults first
   self:applySettings(settings) --then fill with custom settings
   
-  love.window.setMode(self._RWIDTH, self._RHEIGHT, {
+  windowUpdateMode(self._RWIDTH, self._RHEIGHT, {
     fullscreen = self._fullscreen,
     resizable = self._resizable,
     highdpi = self._highdpi
@@ -253,7 +258,7 @@ function push:switchFullscreen(winw, winh)
   
   love.window.setFullscreen(self._fullscreen, "desktop")
   if not self._fullscreen and (winw or winh) then
-    love.window.setMode(self._RWIDTH, self._RHEIGHT) --set window dimensions
+    windowUpdateMode(self._RWIDTH, self._RHEIGHT) --set window dimensions
   end
 end
 

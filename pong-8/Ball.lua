@@ -22,8 +22,8 @@ function Ball:init(x, y, width, height)
 
     -- these variables are for keeping track of our velocity on both the
     -- X and Y axis, since the ball can move in two dimensions
-    self.dy = math.random(2) == 1 and -100 or 100
-    self.dx = math.random(2) == 1 and math.random(-80, -100) or math.random(80, 100)
+    self.dy = math.random(2) == 1 and -20 or 20
+    self.dx = math.random(2) == 1 and math.random(-200, -250) or math.random(200, 250)
 end
 
 --[[
