@@ -86,7 +86,7 @@ function love.load()
         fullscreen = false,
         resizable = true,
         vsync = true,
-        canvas = false
+        --canvas = false
     })
 
     -- initialize our player paddles; make them global so that they can be
@@ -303,7 +303,7 @@ function love.draw()
     -- begin drawing with push, in our virtual resolution
     push:start()
 
-    love.graphics.clear(40, 45, 52, 255)
+    love.graphics.clear(40, 45, 52, 0.35)
     
     -- render different things depending on which part of the game we're in
     if gameState == 'start' then

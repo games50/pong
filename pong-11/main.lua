@@ -267,11 +267,11 @@ end
 ]]
 function love.draw()
 
-    push:apply('start')
+    push:start()
 
     -- clear the screen with a specific color; in this case, a color similar
     -- to some versions of the original Pong
-    love.graphics.clear(40, 45, 52, 255)
+    love.graphics.clear(40, 45, 52, 0.35)
 
     love.graphics.setFont(smallFont)
 
@@ -303,7 +303,7 @@ function love.draw()
 
     displayFPS()
 
-    push:apply('end')
+    push:finish()
 end
 
 --[[

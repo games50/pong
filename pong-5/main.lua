@@ -150,11 +150,11 @@ end
 ]]
 function love.draw()
     -- begin rendering at virtual resolution
-    push:apply('start')
+    push:start()
 
     -- clear the screen with a specific color; in this case, a color similar
     -- to some versions of the original Pong
-    love.graphics.clear(40, 45, 52, 255)
+    love.graphics.clear(40, 45, 52, 0.35)
 
     -- draw different things based on the state of the game
     love.graphics.setFont(smallFont)
@@ -173,5 +173,5 @@ function love.draw()
     ball:render()
 
     -- end rendering at virtual resolution
-    push:apply('end')
+    push:finish()
 end
