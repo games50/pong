@@ -303,7 +303,7 @@ function love.draw()
     -- begin drawing with push, in our virtual resolution
     push:start()
 
-    love.graphics.clear(40, 45, 52, 255)
+    love.graphics.clear(40/255, 45/255, 52/255, 255/255)
     
     -- render different things depending on which part of the game we're in
     if gameState == 'start' then
