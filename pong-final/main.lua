@@ -303,7 +303,10 @@ function love.draw()
     -- begin drawing with push, in our virtual resolution
     push:start()
 
-    love.graphics.clear(40, 45, 52, 255)
+
+    --the below function is the cause for the white screen
+    --love.graphics.clear(40, 45, 52, 255)
+
     
     -- render different things depending on which part of the game we're in
     if gameState == 'start' then
