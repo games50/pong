@@ -39,6 +39,22 @@ require 'Paddle'
 -- but which will mechanically function very differently
 require 'Ball'
 
+-- Stores true or false, depending on whether the current Love 2D version is prior to 11.0
+local love11 = love.getVersion() == 11
+
+-- In versions prior to 11.0, color component values were within the range of 0 to 255 instead of 0 to 1.
+-- Set Clear Color to #282d34 (40, 45, 52) with an alpha of 100%
+--
+-- https://love2d.org/wiki/love.graphics.clear
+r0to255 = 40
+g0to255 = 45
+b0to255 = 52
+a0to255 = 255
+local rBackground = love11 and r0to255/255 or r0to255
+local gBackground = love11 and g0to255/255 or g0to255
+local bBackground = love11 and b0to255/255 or b0to255
+local aBackground = love11 and a0to255/255 or a0to255
+
 -- size of our actual window
 WINDOW_WIDTH = 1280
 WINDOW_HEIGHT = 720
@@ -303,7 +319,7 @@ function love.draw()
     -- begin drawing with push, in our virtual resolution
     push:start()
 
-    love.graphics.clear(40, 45, 52, 255)
+    love.graphics.clear(rBackground, gBackground, bBackground, aBackground)
     
     -- render different things depending on which part of the game we're in
     if gameState == 'start' then
