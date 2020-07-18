@@ -111,7 +111,7 @@ function love.update(dt)
         -- detect ball collision with paddles, reversing dx if true and
         -- slightly increasing it, then altering the dy based on the position of collision
         if ball:collides(player1) then
-            ball.dx = -ball.dx * 1.03
+            ball.dx = -ball.dx * 1.05
             ball.x = player1.x + 5
 
             -- keep velocity going in the same direction, but randomize it
@@ -122,7 +122,7 @@ function love.update(dt)
             end
         end
         if ball:collides(player2) then
-            ball.dx = -ball.dx * 1.03
+            ball.dx = -ball.dx * 1.05
             ball.x = player2.x - 4
 
             -- keep velocity going in the same direction, but randomize it
@@ -207,7 +207,7 @@ function love.draw()
 
     -- clear the screen with a specific color; in this case, a color similar
     -- to some versions of the original Pong
-    love.graphics.clear(40, 45, 52, 255)
+    love.graphics.clear(0.16, 0.18, 0.20, 255)
 
     -- draw different things based on the state of the game
     love.graphics.setFont(smallFont)
