@@ -62,6 +62,7 @@ function love.load()
     -- paddle positions on the Y axis (they can only move up or down)
     player1Y = 30
     player2Y = VIRTUAL_HEIGHT - 50
+    paddleheight = 20
 
     -- velocity and position variables for our ball when play starts
     ballX = VIRTUAL_WIDTH / 2 - 2
@@ -93,7 +94,7 @@ function love.update(dt)
         -- add positive paddle speed to current Y scaled by deltaTime
         -- math.min returns the lesser of two values; bottom of the egde minus paddle height
         -- and player Y will ensure we don't go below it
-        player1Y = math.min(VIRTUAL_HEIGHT - 20, player1Y + PADDLE_SPEED * dt)
+        player1Y = math.min(VIRTUAL_HEIGHT - paddleheight, player1Y + PADDLE_SPEED * dt)
     end
 
     -- player 2 movement
@@ -102,7 +103,7 @@ function love.update(dt)
         player2Y = math.max(0, player2Y + -PADDLE_SPEED * dt)
     elseif love.keyboard.isDown('down') then
         -- add positive paddle speed to current Y scaled by deltaTime
-        player2Y = math.min(VIRTUAL_HEIGHT - 20, player2Y + PADDLE_SPEED * dt)
+        player2Y = math.min(VIRTUAL_HEIGHT - paddleheight, player2Y + PADDLE_SPEED * dt)
     end
 
     -- update our ball based on its DX and DY only if we're in play state;
@@ -153,7 +154,7 @@ function love.draw()
 
     -- clear the screen with a specific color; in this case, a color similar
     -- to some versions of the original Pong
-    love.graphics.clear(40, 45, 52, 255)
+    love.graphics.clear(40/255, 45/255, 52/255, 255)
 
     -- draw different things based on the state of the game
     love.graphics.setFont(smallFont)
@@ -165,10 +166,10 @@ function love.draw()
     end
 
     -- render first paddle (left side), now using the players' Y variable
-    love.graphics.rectangle('fill', 10, player1Y, 5, 20)
+    love.graphics.rectangle('fill', 5, player1Y, 5, paddleheight)
 
     -- render second paddle (right side)
-    love.graphics.rectangle('fill', VIRTUAL_WIDTH - 10, player2Y, 5, 20)
+    love.graphics.rectangle('fill', VIRTUAL_WIDTH - 10, player2Y, 5, paddleheight)
 
     -- render ball (center)
     love.graphics.rectangle('fill', ballX, ballY, 4, 4)

@@ -64,6 +64,7 @@ function love.load()
     player2Score = 0
 
     -- paddle positions on the Y axis (they can only move up or down)
+    paddleheight = 20
     player1Y = 30
     player2Y = VIRTUAL_HEIGHT - 50
 end
@@ -90,6 +91,22 @@ function love.update(dt)
         -- add positive paddle speed to current Y scaled by deltaTime
         player2Y = player2Y + PADDLE_SPEED * dt
     end
+    
+
+    --Check for top and bottom collisions for paddle 1
+    if player1Y >= VIRTUAL_HEIGHT - paddleheight then
+        player1Y = VIRTUAL_HEIGHT-paddleheight
+    end
+    if player1Y <= 0 then
+        player1Y = 0
+    end
+    --Check for top and bottom collisions for paddle 2
+    if player2Y >= VIRTUAL_HEIGHT - paddleheight then
+        player2Y = VIRTUAL_HEIGHT-paddleheight
+    end
+    if player2Y <= 0 then
+        player2Y = 0
+    end
 end
 
 --[[
@@ -114,7 +131,7 @@ function love.draw()
 
     -- clear the screen with a specific color; in this case, a color similar
     -- to some versions of the original Pong
-    love.graphics.clear(40, 45, 52, 255)
+    love.graphics.clear(19/255,19/255,19/255, 255)
 
     -- draw welcome text toward the top of the screen
     love.graphics.setFont(smallFont)
@@ -129,10 +146,10 @@ function love.draw()
         VIRTUAL_HEIGHT / 3)
 
     -- render first paddle (left side), now using the players' Y variable
-    love.graphics.rectangle('fill', 10, player1Y, 5, 20)
+    love.graphics.rectangle('fill', 5, player1Y, 5, paddleheight)
 
     -- render second paddle (right side)
-    love.graphics.rectangle('fill', VIRTUAL_WIDTH - 10, player2Y, 5, 20)
+    love.graphics.rectangle('fill', VIRTUAL_WIDTH - 10, player2Y, 5, paddleheight)
 
     -- render ball (center)
     love.graphics.rectangle('fill', VIRTUAL_WIDTH / 2 - 2, VIRTUAL_HEIGHT / 2 - 2, 4, 4)
