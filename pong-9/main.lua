@@ -93,7 +93,7 @@ function love.load()
     servingPlayer = 1
 
     -- initialize player paddles and ball
-    player1 = Paddle(10, 30, 5, 20)
+    player1 = Paddle(5, 30, 5, 20)
     player2 = Paddle(VIRTUAL_WIDTH - 10, VIRTUAL_HEIGHT - 30, 5, 20)
     ball = Ball(VIRTUAL_WIDTH / 2 - 2, VIRTUAL_HEIGHT / 2 - 2, 4, 4)
 
@@ -119,7 +119,7 @@ function love.update(dt)
         -- slightly increasing it, then altering the dy based on the position of collision
         if ball:collides(player1) then
             ball.dx = -ball.dx * 1.03
-            ball.x = player1.x + 5
+            ball.x = player1.x + player1.width
 
             -- keep velocity going in the same direction, but randomize it
             if ball.dy < 0 then
@@ -130,7 +130,7 @@ function love.update(dt)
         end
         if ball:collides(player2) then
             ball.dx = -ball.dx * 1.03
-            ball.x = player2.x - 4
+            ball.x = player2.x - ball.width
 
             -- keep velocity going in the same direction, but randomize it
             if ball.dy < 0 then
@@ -147,8 +147,8 @@ function love.update(dt)
         end
 
         -- -4 to account for the ball's size
-        if ball.y >= VIRTUAL_HEIGHT - 4 then
-            ball.y = VIRTUAL_HEIGHT - 4
+        if ball.y >= VIRTUAL_HEIGHT - ball.width then
+            ball.y = VIRTUAL_HEIGHT - ball.width
             ball.dy = -ball.dy
         end
     end
@@ -226,7 +226,7 @@ function love.draw()
 
     -- clear the screen with a specific color; in this case, a color similar
     -- to some versions of the original Pong
-    love.graphics.clear(40, 45, 52, 255)
+    love.graphics.clear(40/255, 45/255, 52/255, 255)
 
     love.graphics.setFont(smallFont)
 
@@ -260,7 +260,7 @@ end
 function displayFPS()
     -- simple FPS display across all states
     love.graphics.setFont(smallFont)
-    love.graphics.setColor(0, 255, 0, 255)
+    love.graphics.setColor(0, 1, 0, 255)
     love.graphics.print('FPS: ' .. tostring(love.timer.getFPS()), 10, 10)
 end
 
