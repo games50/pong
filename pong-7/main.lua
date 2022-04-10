@@ -37,7 +37,6 @@ Class = require 'class'
 -- our Paddle class, which stores position and dimensions for each Paddle
 -- and the logic for rendering them
 require 'Paddle'
-
 -- our Ball class, which isn't much different than a Paddle structure-wise
 -- but which will mechanically function very differently
 require 'Ball'
