@@ -32,7 +32,7 @@ function love.load()
 	
 	ball = Ball(VIRTUAL_WIDTH / 2 - 2, VIRTUAL_HEIGHT / 2 - 2, 4, 4)
 
-	gameState = 'start'
+	gameState = 'serve'
 	
 	sounds = {
 		['paddle_hit'] = love.audio.newSource('sounds/paddle_hit.wav', 'static'),
