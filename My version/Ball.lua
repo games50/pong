@@ -33,15 +33,17 @@ end
 function Ball:reset()
     self.x = VIRTUAL_WIDTH / 2 - 2
     self.y = VIRTUAL_HEIGHT / 2 - 2
-    self.dy = math.random(2) == 1 and -100 or 100
-    self.dx = math.random(-50, 50)
+    -- self.dy = math.random(2) == 1 and -60 or 60
+    -- self.dx = math.random(-100, 100)
+    self.dy = 0
+    self.dx = 0 
 end
 
 function Ball:collides(paddle)
     if self.x > paddle.x + paddle.width or paddle.x > self.x + self.width then
         return false
     end
-    if self.y > paddle.y + paddle.width or paddle.y > self.y + self.width then
+    if self.y > paddle.y + paddle.height or paddle.y > self.y + self.height then
         return false
     end
     return true
