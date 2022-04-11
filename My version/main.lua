@@ -8,6 +8,7 @@ PADDLE_SPEED = 200
 
 servingPlayer = 1
 winningPlayer = 0
+toWin = 5
 
 push = require 'push'
 Class = require 'class'
@@ -55,6 +56,7 @@ function love.load()
 	})
 end
 
+-- For resizing the window
 function love.resize(w, h)
 	push:resize(w, h)
 end
@@ -106,7 +108,7 @@ function love.update(dt)
         if ball.x < 0 then    		
 	        servingPlayer = 1
         	player2Score = player2Score + 1
-        	if player2Score >= 1  then
+        	if player2Score >= toWin  then
         		winningPlayer = 2
         		sounds['score']:play()
         		gameState = 'done'
@@ -117,7 +119,7 @@ function love.update(dt)
         elseif ball.x > VIRTUAL_WIDTH then
         	player1Score = player1Score + 1
         	servingPlayer = 2	
-        	if player1Score >= 1 then
+        	if player1Score >= toWin then
         		winningPlayer = 1    		
 	        	sounds['score']:play()
         		gameState = 'done'
@@ -133,6 +135,7 @@ function love.update(dt)
 		ball:update(dt)
 	end
 
+	-- Y axis Movement of Player1
 	if love.keyboard.isDown('w') then
 		player1.dy = -PADDLE_SPEED
 	elseif love.keyboard.isDown('s') then
@@ -141,13 +144,47 @@ function love.update(dt)
 		player1.dy = 0
 	end
 
-
+	-- Y axis Movement of Player2
 	if love.keyboard.isDown('up') then
 		player2.dy = -PADDLE_SPEED
 	elseif love.keyboard.isDown('down') then
 		player2.dy = PADDLE_SPEED
 	else
 		player2.dy = 0
+	end
+
+	-- X axis Movement of player1
+
+	if love.keyboard.isDown('d') then
+		player1.dx = PADDLE_SPEED
+	elseif love.keyboard.isDown('a') then
+		player1.dx = -PADDLE_SPEED
+	else 
+		player1.dx = 0
+	end
+
+	-- X Movement for player2
+	if love.keyboard.isDown('right') then
+		player2.dx = PADDLE_SPEED
+	elseif love.keyboard.isDown('left') then
+		player2.dx = -PADDLE_SPEED
+	else 
+		player2.dx = 0
+	end
+
+	-- Limit PLayer1's movement till left side
+	if player1.dx < 0 then
+    	player1.x = math.max(0, player1.x + player1.dx * dt)
+    	-- To keep paddle 1 on the left half
+    else
+    	player1.x = math.min(VIRTUAL_WIDTH / 4 - player1.width, player1.x + player1.dx * dt)
+    end
+
+	-- Limit PLayer2's movement till right side
+    if player2.dx < 0 then
+    	player2.x = math.max(3 * VIRTUAL_WIDTH / 4 - player2.width, player2.x + player2.dx * dt)
+	else
+		player2.x = math.min(VIRTUAL_WIDTH - player2.width, player2.x + player2.dx * dt)
 	end
 
 	player1:update(dt)
