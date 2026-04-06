@@ -1,5 +1,5 @@
 --[[
-    GD50 2018
+    CS50 2D
     Pong Remake
 
     pong-3
