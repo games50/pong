@@ -1,5 +1,5 @@
 --[[
-    GD50 2018
+    CS50 2D
     Pong Remake
 
     pong-10
@@ -16,7 +16,7 @@
 
     This version is built to more closely resemble the NES than
     the original Pong machines or the Atari 2600 in terms of
-    resolution, though in widescreen (16:9) so it looks nicer on 
+    resolution, though in widescreen (16:9) so it looks nicer on
     modern systems.
 ]]
 
@@ -73,12 +73,14 @@ function love.load()
     scoreFont = love.graphics.newFont('font.ttf', 32)
     love.graphics.setFont(smallFont)
 
-    -- initialize window with virtual resolution
-    push:setupScreen(VIRTUAL_WIDTH, VIRTUAL_HEIGHT, WINDOW_WIDTH, WINDOW_HEIGHT, {
+    love.window.setMode(WINDOW_WIDTH, WINDOW_HEIGHT, {
+        resizable = true,
         fullscreen = false,
-        resizable = false,
         vsync = true
     })
+
+    -- initialize window with virtual resolution
+    push.setupScreen(VIRTUAL_WIDTH, VIRTUAL_HEIGHT, { upscale = 'normal' })
 
     -- initialize score variables, used for rendering on the screen and keeping
     -- track of the winner
@@ -98,7 +100,7 @@ function love.load()
 end
 
 --[[
-    Runs every frame, with "dt" passed in, our delta in seconds 
+    Runs every frame, with "dt" passed in, our delta in seconds
     since the last frame, which LÖVE2D supplies us.
 ]]
 function love.update(dt)
@@ -148,8 +150,8 @@ function love.update(dt)
             ball.y = VIRTUAL_HEIGHT - 4
             ball.dy = -ball.dy
         end
-        
-        -- if we reach the left or right edge of the screen, 
+
+        -- if we reach the left or right edge of the screen,
         -- go back to start and update the score
         if ball.x < 0 then
             servingPlayer = 1
@@ -157,7 +159,7 @@ function love.update(dt)
 
             -- if we've reached a score of 10, the game is over; set the
             -- state to done so we can show the victory message
-            if player2Score == 10 then
+            if player2Score == 2 then
                 winningPlayer = 2
                 gameState = 'done'
             else
@@ -170,8 +172,8 @@ function love.update(dt)
         if ball.x > VIRTUAL_WIDTH then
             servingPlayer = 2
             player1Score = player1Score + 1
-            
-            if player1Score == 10 then
+
+            if player1Score == 2 then
                 winningPlayer = 1
                 gameState = 'done'
             else
@@ -210,7 +212,7 @@ function love.update(dt)
 end
 
 --[[
-    Keyboard handling, called by LÖVE2D each frame; 
+    Keyboard handling, called by LÖVE2D each frame;
     passes in the key we pressed so we can access.
 ]]
 function love.keypressed(key)
@@ -246,12 +248,12 @@ function love.keypressed(key)
 end
 
 --[[
-    Called after update by LÖVE2D, used to draw anything to the screen, 
+    Called after update by LÖVE2D, used to draw anything to the screen,
     updated or otherwise.
 ]]
 function love.draw()
 
-    push:apply('start')
+    push.start()
 
     -- clear the screen with a specific color; in this case, a color similar
     -- to some versions of the original Pong
@@ -267,7 +269,7 @@ function love.draw()
         love.graphics.printf('Press Enter to begin!', 0, 20, VIRTUAL_WIDTH, 'center')
     elseif gameState == 'serve' then
         love.graphics.setFont(smallFont)
-        love.graphics.printf('Player ' .. tostring(servingPlayer) .. "'s serve!", 
+        love.graphics.printf('Player ' .. tostring(servingPlayer) .. "'s serve!",
             0, 10, VIRTUAL_WIDTH, 'center')
         love.graphics.printf('Press Enter to serve!', 0, 20, VIRTUAL_WIDTH, 'center')
     elseif gameState == 'play' then
@@ -287,7 +289,7 @@ function love.draw()
 
     displayFPS()
 
-    push:apply('end')
+    push.finish()
 end
 
 --[[
@@ -298,6 +300,7 @@ function displayFPS()
     love.graphics.setFont(smallFont)
     love.graphics.setColor(0, 255, 0, 255)
     love.graphics.print('FPS: ' .. tostring(love.timer.getFPS()), 10, 10)
+    love.graphics.setColor(1, 1, 1, 1)
 end
 
 --[[
@@ -307,7 +310,7 @@ function displayScore()
     -- draw score on the left and right center of the screen
     -- need to switch font to draw before actually printing
     love.graphics.setFont(scoreFont)
-    love.graphics.print(tostring(player1Score), VIRTUAL_WIDTH / 2 - 50, 
+    love.graphics.print(tostring(player1Score), VIRTUAL_WIDTH / 2 - 50,
         VIRTUAL_HEIGHT / 3)
     love.graphics.print(tostring(player2Score), VIRTUAL_WIDTH / 2 + 30,
         VIRTUAL_HEIGHT / 3)
