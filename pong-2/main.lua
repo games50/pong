@@ -16,7 +16,7 @@
 
     This version is built to more closely resemble the NES than
     the original Pong machines or the Atari 2600 in terms of
-    resolution, though in widescreen (16:9) so it looks nicer on 
+    resolution, though in widescreen (16:9) so it looks nicer on
     modern systems.
 ]]
 
@@ -45,16 +45,18 @@ function love.load()
     -- set LÖVE2D's active font to the smallFont obect
     love.graphics.setFont(smallFont)
 
-    -- initialize window with virtual resolution
-    push:setupScreen(VIRTUAL_WIDTH, VIRTUAL_HEIGHT, WINDOW_WIDTH, WINDOW_HEIGHT, {
+    love.window.setMode(WINDOW_WIDTH, WINDOW_HEIGHT, {
+        resizable = true,
         fullscreen = false,
-        resizable = false,
         vsync = true
     })
+
+    -- initialize window with virtual resolution
+    push.setupScreen(VIRTUAL_WIDTH, VIRTUAL_HEIGHT, { upscale = 'normal' })
 end
 
 --[[
-    Keyboard handling, called by LÖVE2D each frame; 
+    Keyboard handling, called by LÖVE2D each frame;
     passes in the key we pressed so we can access.
 ]]
 function love.keypressed(key)
@@ -66,12 +68,12 @@ function love.keypressed(key)
 end
 
 --[[
-    Called after update by LÖVE2D, used to draw anything to the screen, 
+    Called after update by LÖVE2D, used to draw anything to the screen,
     updated or otherwise.
 ]]
 function love.draw()
     -- begin rendering at virtual resolution
-    push:apply('start')
+    push.start()
 
     -- clear the screen with a specific color; in this case, a color similar
     -- to some versions of the original Pong
@@ -95,5 +97,5 @@ function love.draw()
     love.graphics.rectangle('fill', VIRTUAL_WIDTH / 2 - 2, VIRTUAL_HEIGHT / 2 - 2, 4, 4)
 
     -- end rendering at virtual resolution
-    push:apply('end')
+    push.finish()
 end
